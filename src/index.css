@@ -156,29 +156,36 @@ button:active {
   opacity: 0.85;
 }
 
-.butterfly-ribbon {
+.wax-seal {
   position: absolute;
   top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 6;
   cursor: pointer;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  animation: butterflyFloat 3s ease-in-out infinite;
-}
-
-.butterfly-img {
-  width: 160px;
-  height: auto;
-  filter: drop-shadow(0 10px 24px rgba(236, 72, 153, 0.45));
+  justify-content: center;
+  background: radial-gradient(circle at 32% 28%, #f472b6, #be185d 60%, #9d174d);
+  box-shadow: 0 10px 24px rgba(190, 24, 93, 0.5),
+    inset 0 3px 6px rgba(255, 255, 255, 0.4),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.25);
+  border: 3px dashed rgba(255, 255, 255, 0.55);
   transition: transform 200ms ease;
 }
 
-.butterfly-ribbon:hover .butterfly-img {
-  transform: scale(1.08);
+.wax-seal:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.wax-seal-heart {
+  font-size: 2.4rem;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .password-panel {

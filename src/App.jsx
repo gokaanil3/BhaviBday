@@ -279,8 +279,8 @@ function App() {
             <div className="envelope-front" />
             <div className="envelope-flap" />
             {!envelopeOpen && (
-              <div className="butterfly-ribbon" onClick={handleRibbonClick} title="Click to open">
-                <img src="/assets/butterfly-ribbon.png" alt="Butterfly ribbon" className="butterfly-img" />
+              <div className="wax-seal" onClick={handleRibbonClick} title="Click to open">
+                <span className="wax-seal-heart">♥</span>
               </div>
             )}
           </div>
