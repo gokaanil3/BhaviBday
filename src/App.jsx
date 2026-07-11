@@ -78,6 +78,10 @@ function App() {
       audio.loop = true;
       audio.volume = 0.25;
       audio.preload = 'auto';
+      audio.addEventListener('ended', () => {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      });
       musicAudioRef.current = audio;
     }
     musicAudioRef.current
