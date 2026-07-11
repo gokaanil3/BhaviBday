@@ -19,7 +19,7 @@ const JINZHAN_GIFS = [
 const GifGrid = ({ count = 8 }) => (
   <div className="jinzhan-grid">
     {JINZHAN_GIFS.slice(0, count).map((src, i) => (
-      <img key={i} src={src} alt={`Jinzhan love ${i + 1}`} className="jinzhan-small" loading="lazy" />
+      <img key={i} src={src} alt={`Jinzhan love ${i + 1}`} className="jinzhan-small" loading="lazy" decoding="async" />
     ))}
   </div>
 );
@@ -71,14 +71,35 @@ function App() {
     };
   }, []);
 
-  const startMusic = () => {
-    setMusicOn(true);
+  const startAudio = () => {
+    if (!musicSettings.backgroundMusicUrl) return;
+    if (!musicAudioRef.current) {
+      const audio = new Audio(musicSettings.backgroundMusicUrl);
+      audio.loop = true;
+      audio.volume = 0.25;
+      audio.preload = 'auto';
+      musicAudioRef.current = audio;
+    }
+    musicAudioRef.current
+      .play()
+      .then(() => setMusicOn(true))
+      .catch(() => {});
+  };
+
+  const toggleMusic = () => {
+    const audio = musicAudioRef.current;
+    if (musicOn) {
+      audio?.pause();
+      setMusicOn(false);
+    } else {
+      startAudio();
+    }
   };
 
   useEffect(() => {
     const handleFirstInteraction = () => {
-      if (!musicOn) {
-        setMusicOn(true);
+      if (!musicOn && musicSettings.enabledByDefault) {
+        startAudio();
       }
       window.removeEventListener('click', handleFirstInteraction);
       window.removeEventListener('touchstart', handleFirstInteraction);
@@ -91,25 +112,8 @@ function App() {
       window.removeEventListener('click', handleFirstInteraction);
       window.removeEventListener('touchstart', handleFirstInteraction);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicOn]);
-
-  useEffect(() => {
-    if (!musicOn) return;
-
-    if (musicSettings.backgroundMusicUrl) {
-      const audio = new Audio(musicSettings.backgroundMusicUrl);
-      audio.loop = true;
-      audio.volume = 0.25;
-      audio.play().catch(() => {});
-      musicAudioRef.current = audio;
-
-      return () => {
-        audio.pause();
-        audio.currentTime = 0;
-        musicAudioRef.current = null;
-      };
-    }
-  }, [musicOn, musicSettings.backgroundMusicUrl]);
 
   useEffect(() => {
     if (stage !== 'unlocked') return;
@@ -345,6 +349,15 @@ function App() {
       <main className="content-card" style={{ transform: `perspective(1200px) rotateX(${-tilt.x}deg) rotateY(${tilt.y}deg)` }}>
         <header className="topbar">
           <span className="site-title-text">{siteTitle}</span>
+          <button
+            type="button"
+            className="music-toggle"
+            onClick={toggleMusic}
+            title={musicOn ? 'Mute music' : 'Play music'}
+            aria-label={musicOn ? 'Mute music' : 'Play music'}
+          >
+            {musicOn ? '🔊' : '🔈'}
+          </button>
         </header>
 
         <section className="main-content" key={activeSection}>
@@ -388,7 +401,7 @@ function App() {
               <div className="gallery-grid">
                 {sections.gallery.images.map((img, index) => (
                   <div className="gallery-item" key={index} onClick={openImage(img.src, img.caption, index)}>
-                    <img src={img.src} alt={img.caption} />
+                    <img src={img.src} alt={img.caption} loading="lazy" decoding="async" />
                     <div className="gallery-caption">{img.caption}</div>
                   </div>
                 ))}

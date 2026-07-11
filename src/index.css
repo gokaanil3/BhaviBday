@@ -315,6 +315,32 @@ button:active {
   text-align: center;
 }
 
+.music-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbcfe8, #f9a8d4);
+  color: #be185d;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(190, 24, 93, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex: 0 0 auto;
+}
+
+.music-toggle:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(190, 24, 93, 0.35);
+}
+
+.music-toggle:active {
+  transform: scale(0.95);
+}
+
 /* Main Content */
 .main-content {
   min-height: 400px;
